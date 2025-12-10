@@ -6,32 +6,38 @@ import fileUpload from 'express-fileupload';
 
 const app = express();
 
-//to link router
+// Routers
 import UserRouter from './routes/user.router.js';
 import CategoryRouter from './routes/category.router.js';
 import SubCategoryRouter from './routes/subcategory.router.js';
 import ShipmentRouter from './routes/shipment.router.js'
 import BidRouter from './routes/bid.router.js'
-//configuration to fetch req body content : body parser middleware
-//used to fetch req data from methods like : POST , PUT , PATCH , DELETE
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
-let a = "hello"
-//configuration to fetch file from req
-app.use(fileUpload()); 
 
-//configuration to resolve cross origin problem
+// Body Parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// File Upload
+app.use(fileUpload());
+
+// ✅ ✅ ✅ PERFECT CORS CONFIG ✅ ✅ ✅
 app.use(cors({
-  origin: "*",           // testing ke liye
-  methods: "GET,POST,PUT,DELETE",
-  allowedHeaders: "Content-Type, Authorization"
+  origin: "https://shippingwar.vercel.app",   // ✅ Sirf frontend allow
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
 
-//router level middleware to link routers
-app.use("/user",UserRouter);
-app.use("/category",CategoryRouter);
-app.use("/subcategory",SubCategoryRouter);
-app.use("/shipment",ShipmentRouter)
-app.use("/bid",BidRouter)
-app.listen(3001);
-console.log("server invoked at link http://localhost:3001");
+// Routers
+app.use("/user", UserRouter);
+app.use("/category", CategoryRouter);
+app.use("/subcategory", SubCategoryRouter);
+app.use("/shipment", ShipmentRouter);
+app.use("/bid", BidRouter);
+
+// ✅ ✅ ✅ RENDER PORT FIX (MOST IMPORTANT) ✅ ✅ ✅
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log("✅ Server running on PORT:", PORT);
+});
