@@ -1,31 +1,93 @@
-import "../models/connection.js";
-import url from 'url';
-import path from 'path';
+// import "../models/connection.js";
+// import url from 'url';
+// import path from 'path';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+// const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+// import CategorySchemaModel from "../models/category.model.js";
+
+// export const save=async(req,res)=>{
+//  const category=await CategorySchemaModel.find();
+//  const l=category.length;
+//  const _id=l==0?1:category[l-1]._id+1;
+
+//  //to get file & to move in specific folder
+//  const caticon=req.files.caticon;
+//  const caticonnm=Date.now()+"-"+caticon.name;
+//  const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/categoryicons",caticonnm);
+//  caticon.mv(uploadpath);
+
+//  const cDetails={...req.body,'_id':_id,"caticonnm":caticonnm};
+//  try{
+//     await CategorySchemaModel.create(cDetails);
+//     res.status(201).json({"status":true});
+//  }
+//  catch(error){
+//     res.status(500).json({"status":false});
+//  }
+// };
+
+
 
 import CategorySchemaModel from "../models/category.model.js";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
-export const save=async(req,res)=>{
- const category=await CategorySchemaModel.find();
- const l=category.length;
- const _id=l==0?1:category[l-1]._id+1;
+// ✅ __dirname fix for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
- //to get file & to move in specific folder
- const caticon=req.files.caticon;
- const caticonnm=Date.now()+"-"+caticon.name;
- const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/categoryicons",caticonnm);
- caticon.mv(uploadpath);
+export const save = async (req, res) => {
+  try {
+    // ✅ Body validation
+    if (!req.body.catnm) {
+      return res.status(400).json({ status: false, message: "Category name required" });
+    }
 
- const cDetails={...req.body,'_id':_id,"caticonnm":caticonnm};
- try{
+    // ✅ File validation
+    if (!req.files || !req.files.caticon) {
+      return res.status(400).json({ status: false, message: "Category icon required" });
+    }
+
+    // ✅ Auto ID logic
+    const category = await CategorySchemaModel.find();
+    const l = category.length;
+    const _id = l === 0 ? 1 : category[l - 1]._id + 1;
+
+    // ✅ File handling
+    const caticon = req.files.caticon;
+    const caticonnm = Date.now() + "-" + caticon.name;
+
+    const uploadDir = path.join(__dirname, "../uploads/categoryicons");
+
+    // ✅ Folder auto-create
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const uploadPath = path.join(uploadDir, caticonnm);
+
+    // ✅ Await added (important)
+    await caticon.mv(uploadPath);
+
+    // ✅ Mongo save
+    const cDetails = {
+      ...req.body,
+      _id: _id,
+      caticonnm: caticonnm
+    };
+
     await CategorySchemaModel.create(cDetails);
-    res.status(201).json({"status":true});
- }
- catch(error){
-    res.status(500).json({"status":false});
- }
+
+    return res.status(201).json({ status: true, message: "Category saved successfully" });
+
+  } catch (error) {
+    console.error("❌ CATEGORY SAVE ERROR:", error);
+    return res.status(500).json({ status: false, error: error.message });
+  }
 };
+
 
 export const fetch=async(req,res)=>{
    var condition_obj=url.parse(req.url,true).query.condition_obj;
