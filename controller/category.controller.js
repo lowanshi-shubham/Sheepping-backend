@@ -88,22 +88,31 @@ export const save = async (req, res) => {
   }
 };
 
+export const fetch = async (req, res) => {
+  try {
+    console.log("fetch api");
 
-export const fetch=async(req,res)=>{
-  console.log("fetch api");
-   var condition_obj=url.parse(req.url,true).query.condition_obj;
-   console.log(condition_obj)
-   if(condition_obj!=undefined)
-    condition_obj=JSON.parse(condition_obj); 
-   else
-    condition_obj={};  
-   var cList=await CategorySchemaModel.find(condition_obj);
-  //  console.log(cList)
-   if(cList.length!=0)
-     res.status(200).json(cList);
-   else
-     res.status(404).json({"status":"Resource not found"}); 
-  };
+    let condition_obj = req.query.condition_obj;
+
+    if (condition_obj) {
+      condition_obj = JSON.parse(condition_obj);
+    } else {
+      condition_obj = {};
+    }
+
+    const cList = await CategorySchemaModel.find(condition_obj);
+
+    if (cList.length !== 0)
+      res.status(200).json(cList);
+    else
+      res.status(404).json({ status: "Resource not found" });
+
+  } catch (error) {
+    console.error("FETCH ERROR:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 
  export var deleteCategory=async(req,res)=>{
    var obj=req.body;
