@@ -44,7 +44,7 @@ export const save = async (req, res) => {
     if (!req.body.catnm) {
       return res.status(400).json({ status: false, message: "Category name required" });
     }
-
+    console.log("hello")
     // ✅ File validation
     if (!req.files || !req.files.caticon) {
       return res.status(400).json({ status: false, message: "Category icon required" });
