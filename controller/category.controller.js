@@ -90,6 +90,7 @@ export const save = async (req, res) => {
 
 
 export const fetch=async(req,res)=>{
+  console.log("fetch api");
    var condition_obj=url.parse(req.url,true).query.condition_obj;
    console.log(condition_obj)
    if(condition_obj!=undefined)
