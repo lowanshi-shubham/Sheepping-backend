@@ -46,7 +46,7 @@ export const save = async (req, res) => {
     }
     console.log("hello")
     // ✅ File validation
-    if (!req.files || !req.files.caticon) {
+    if (!req.file || !req.file.path) {
       return res.status(400).json({ status: false, message: "Category icon required" });
     }
 
@@ -56,20 +56,21 @@ export const save = async (req, res) => {
     const _id = l === 0 ? 1 : category[l - 1]._id + 1;
 
     // ✅ File handling
-    const caticon = req.files.caticon;
-    const caticonnm = Date.now() + "-" + caticon.name;
+    // const caticon = req.files.caticon;
+    const caticonnm = req.file.path;
+    // const caticonnm = Date.now() + "-" + caticon.name;
 
-    const uploadDir = path.join(__dirname, "../uploads/categoryicons");
+    // const uploadDir = path.join(__dirname, "../uploads/categoryicons");
 
     // ✅ Folder auto-create
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
+    // if (!fs.existsSync(uploadDir)) {
+    //   fs.mkdirSync(uploadDir, { recursive: true });
+    // }
 
-    const uploadPath = path.join(uploadDir, caticonnm);
+    // const uploadPath = path.join(uploadDir, caticonnm);
 
     // ✅ Await added (important)
-    await caticon.mv(uploadPath);
+    // await caticon.mv(uploadPath);
 
     // ✅ Mongo save
     const cDetails = {
