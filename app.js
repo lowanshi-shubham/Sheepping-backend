@@ -17,10 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ✅ CORS
-app.use(cors({
-  origin: "https://shippingwar.vercel.app",
-  credentials: true,
-}));
+app.use(cors({ origin: "https://shippingwar.vercel.app", // ✅ Sirf frontend allow 
+              methods: ["GET", "POST", "PUT", "DELETE"],
+              allowedHeaders: ["Content-Type", "Authorization"], 
+              credentials: true }));
 
 // Routes
 app.use("/user", UserRouter);
