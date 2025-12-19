@@ -7,6 +7,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import SubCategorySchemaModel from "../models/subcategory.model.js";
 
 export const save=async(req,res)=>{
+  try{
   console.log(req.body);
  const subcategory=await SubCategorySchemaModel.find();
  const l=subcategory.length;
@@ -19,11 +20,11 @@ export const save=async(req,res)=>{
 //  caticon.mv(uploadpath);
 
  const scDetails={...req.body,'_id':_id,"subcaticonnm":subcaticonnm};
- try{
     await SubCategorySchemaModel.create(scDetails);
     res.status(201).json({"status":true});
  }
  catch(error){
+  console.log(error);
     res.status(500).json({"status":false});
  }
 };
