@@ -34,6 +34,7 @@ export const fetch=async(req,res)=>{
 
 export const fetchById = async (req, res) => {
   const { id } = req.params;
+  console.log("fetch by id bid product")
   
   try {
     const highestBid = await BidSchemaModel
