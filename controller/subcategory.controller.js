@@ -7,6 +7,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import SubCategorySchemaModel from "../models/subcategory.model.js";
 
 export const save=async(req,res)=>{
+  console.log(req.body);
  const subcategory=await SubCategorySchemaModel.find();
  const l=subcategory.length;
  const _id=l==0?1:subcategory[l-1]._id+1;
