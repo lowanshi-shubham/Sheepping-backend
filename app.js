@@ -10,10 +10,7 @@ import SubCategoryRouter from './routes/subcategory.router.js';
 import ShipmentRouter from './routes/shipment.router.js'
   import BidRouter from './routes/bid.router.js'
 // ✅ File upload first
-app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: "/tmp",
-}));
+
 
 // ✅ Body parsers
 app.use(express.json());
