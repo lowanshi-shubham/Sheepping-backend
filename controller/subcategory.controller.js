@@ -15,8 +15,8 @@ export const save=async(req,res)=>{
  //to get file & to move in specific folder
  const caticon=req.files.caticon;
  const subcaticonnm=Date.now()+"-"+caticon.name;
- const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/subcategoryicons",subcaticonnm);
- caticon.mv(uploadpath);
+//  const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/subcategoryicons",subcaticonnm);
+//  caticon.mv(uploadpath);
 
  const scDetails={...req.body,'_id':_id,"subcaticonnm":subcaticonnm};
  try{
