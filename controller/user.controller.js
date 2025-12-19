@@ -14,7 +14,6 @@ export const save=async(req,res)=>{
  const password =rs.generate({length:8,charset:'alphanumeric'})
  console.log(password)
 //  const hendelPassword =await bcrypt.hash(password,10);
-
  const userDetails={...req.body, 'password':password, '_id':_id,'status':0,'role':'user','info':Date()};
  
  try{
