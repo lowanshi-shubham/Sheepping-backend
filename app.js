@@ -3,7 +3,12 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 
 const app = express();
-
+ //Routers 
+   import UserRouter from './routes/user.router.js';
+import CategoryRouter from './routes/category.router.js';
+import SubCategoryRouter from './routes/subcategory.router.js';
+import ShipmentRouter from './routes/shipment.router.js'
+  import BidRouter from './routes/bid.router.js'
 // ✅ File upload first
 app.use(fileUpload({
   useTempFiles: true,
