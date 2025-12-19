@@ -38,16 +38,77 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// export const save = async (req, res) => {
+//   try {
+//     // ✅ Body validation
+//     if (!req.body.catnm) {
+//       return res.status(400).json({ status: false, message: "Category name required" });
+//     }
+//     console.log("hello")
+//     // ✅ File validation
+//     if (!req.files || !req.files.path) {
+//       return res.status(400).json({ status: false, message: "Category icon required" });
+//     }
+
+//     // ✅ Auto ID logic
+//     const category = await CategorySchemaModel.find();
+//     const l = category.length;
+//     const _id = l === 0 ? 1 : category[l - 1]._id + 1;
+
+//     // ✅ File handling
+//     // const caticon = req.files.caticon;
+//     const caticonnm = req.file.path;
+//     // const caticonnm = Date.now() + "-" + caticon.name;
+
+//     // const uploadDir = path.join(__dirname, "../uploads/categoryicons");
+
+//     // ✅ Folder auto-create
+//     // if (!fs.existsSync(uploadDir)) {
+//     //   fs.mkdirSync(uploadDir, { recursive: true });
+//     // }
+
+//     // const uploadPath = path.join(uploadDir, caticonnm);
+
+//     // ✅ Await added (important)
+//     // await caticon.mv(uploadPath);
+
+//     // ✅ Mongo save
+//     const cDetails = {
+//       ...req.body,
+//       _id: _id,
+//       caticonnm: caticonnm
+//     };
+
+//     await CategorySchemaModel.create(cDetails);
+
+//     return res.status(201).json({ status: true, message: "Category saved successfully" });
+
+//   } catch (error) {
+//     console.error("❌ CATEGORY SAVE ERROR:", error);
+//     return res.status(500).json({ status: false, error: error.message });
+//   }
+// };
+
+
+
+
+
 export const save = async (req, res) => {
   try {
     // ✅ Body validation
     if (!req.body.catnm) {
-      return res.status(400).json({ status: false, message: "Category name required" });
+      return res.status(400).json({
+        status: false,
+        message: "Category name required"
+      });
     }
-    console.log("hello")
-    // ✅ File validation
-    if (!req.file || !req.file.path) {
-      return res.status(400).json({ status: false, message: "Category icon required" });
+
+    // ✅ File validation (MULTER WAY)
+    if (!req.file) {
+      return res.status(400).json({
+        status: false,
+        message: "Category icon required"
+      });
     }
 
     // ✅ Auto ID logic
@@ -55,22 +116,8 @@ export const save = async (req, res) => {
     const l = category.length;
     const _id = l === 0 ? 1 : category[l - 1]._id + 1;
 
-    // ✅ File handling
-    // const caticon = req.files.caticon;
+    // ✅ Multer file path
     const caticonnm = req.file.path;
-    // const caticonnm = Date.now() + "-" + caticon.name;
-
-    // const uploadDir = path.join(__dirname, "../uploads/categoryicons");
-
-    // ✅ Folder auto-create
-    // if (!fs.existsSync(uploadDir)) {
-    //   fs.mkdirSync(uploadDir, { recursive: true });
-    // }
-
-    // const uploadPath = path.join(uploadDir, caticonnm);
-
-    // ✅ Await added (important)
-    // await caticon.mv(uploadPath);
 
     // ✅ Mongo save
     const cDetails = {
@@ -81,13 +128,20 @@ export const save = async (req, res) => {
 
     await CategorySchemaModel.create(cDetails);
 
-    return res.status(201).json({ status: true, message: "Category saved successfully" });
+    return res.status(201).json({
+      status: true,
+      message: "Category saved successfully"
+    });
 
   } catch (error) {
     console.error("❌ CATEGORY SAVE ERROR:", error);
-    return res.status(500).json({ status: false, error: error.message });
+    return res.status(500).json({
+      status: false,
+      error: error.message
+    });
   }
 };
+
 
 export const fetch = async (req, res) => {
   try {
