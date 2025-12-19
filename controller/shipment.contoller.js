@@ -16,14 +16,14 @@ export const save=async(req,res)=>{
  //to get file & to move in specific folder
  const shipmenticon=req.files.producticon;
  const shipmenticonnm=Date.now()+"-"+shipmenticon.name;
- const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/shipmenticons",shipmenticonnm);
- shipmenticon.mv(uploadpath);
+//  const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/shipmenticons",shipmenticonnm);
+//  shipmenticon.mv(uploadpath);
 
  const shipmentDescription=req.files.description;
 //  console.log(shipmentDescription)
  const shipmentDescriptionnm=Date.now()+"-"+shipmentDescription.name
- const D_uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/shipmentDescription",shipmentDescriptionnm)
-shipmentDescription.mv(D_uploadpath);
+//  const D_uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/shipmentDescription",shipmentDescriptionnm)
+// shipmentDescription.mv(D_uploadpath);
 
 
  const sDetails={...req.body,'_id':_id, "description":shipmentDescriptionnm, "piconnm":shipmenticonnm,"auctionprice":req.body.baseprice,"info":Date()};
