@@ -1,4 +1,5 @@
 import express from 'express';
+import {upload} from '../multer/multer.js'
 
 //to link controller
 //import * as CategoryController from '../controller/category.controller.js';
