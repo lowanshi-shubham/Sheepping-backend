@@ -9,19 +9,23 @@ import ShipmentSchemaModel from "../models/shipment.model.js";
 
 export const save=async(req,res)=>{
    try{
+      
+    const shipmenticonnm = req.files?.producticon?.[0]?.path;
+    const shipmentDescriptionnm = req.files?.description?.[0]?.path;
+
  const shipment=await ShipmentSchemaModel.find();
  const l=shipment.length;
  const _id=l==0?1:shipment[l-1]._id+1;
 
  //to get file & to move in specific folder
- const shipmenticon=req.files.producticon;
- const shipmenticonnm=Date.now()+"-"+shipmenticon.name;
+//  const shipmenticon=req.files.producticon;
+//  const shipmenticonnm=Date.now()+"-"+shipmenticon.name;
 //  const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/shipmenticons",shipmenticonnm);
 //  shipmenticon.mv(uploadpath);
 
- const shipmentDescription=req.files.description;
+//  const shipmentDescription=req.files.description;
 //  console.log(shipmentDescription)
- const shipmentDescriptionnm=Date.now()+"-"+shipmentDescription.name
+//  const shipmentDescriptionnm=Date.now()+"-"+shipmentDescription.name
 //  const D_uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/shipmentDescription",shipmentDescriptionnm)
 // shipmentDescription.mv(D_uploadpath);
 

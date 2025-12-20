@@ -6,7 +6,14 @@ import * as ShipmentController from '../controller/shipment.contoller.js';
 
 const router = express.Router();
 
-router.post("/save",ShipmentController.save);
+router.post(
+  "/save",
+  upload.fields([
+    { name: "producticon", maxCount: 1 },
+    { name: "description", maxCount: 1 }
+  ]),
+  ShipmentController.save
+);
 
 router.get("/fetch",ShipmentController.fetch);
 
