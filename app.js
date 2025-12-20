@@ -13,16 +13,19 @@ import ShipmentRouter from './routes/shipment.router.js'
 
 
 // ✅ Body parsers
+console.log("middleware express.json")
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ✅ CORS
+console.log("cors run")
 app.use(cors({ origin: "https://shippingwar.vercel.app", // ✅ Sirf frontend allow 
               methods: ["GET", "POST", "PUT", "DELETE"],
               allowedHeaders: ["Content-Type", "Authorization"], 
               credentials: true }));
 
 // Routes
+console.log("app.js routes run")
 app.use("/user", UserRouter);
 app.use("/category", CategoryRouter);
 app.use("/subcategory", SubCategoryRouter);
