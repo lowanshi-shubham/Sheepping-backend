@@ -6,7 +6,7 @@ import * as CategoryController from '../controller/category.controller.js';
 
 const router = express.Router();
 console.log("category routers");
-router.post("/save",upload.single("caticon"),CategoryController.save);
+router.post("/save",CategoryController.save);
 
 router.get("/fetch",CategoryController.fetch);
 
