@@ -26,7 +26,7 @@ export const save=async(req,res)=>{
  //to get file & to move in specific folder
  const caticon=req.file.path;
 
- const scDetails={...req.body,'_id':_id,"subcaticonnm":subcaticonnm};
+ const scDetails={...req.body,'_id':_id,"subcaticonnm":caticon};
     await SubCategorySchemaModel.create(scDetails);
     res.status(201).json({"status":true});
  }
