@@ -95,6 +95,8 @@ const __dirname = path.dirname(__filename);
 
 export const save = async (req, res) => {
   try {
+    console.log("category save api")
+    console.log(req.body);
     // ✅ Body validation
     if (!req.body.catnm) {
       return res.status(400).json({
