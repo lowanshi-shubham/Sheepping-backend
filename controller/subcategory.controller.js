@@ -1,23 +1,30 @@
 import "../models/connection.js";
-import url from 'url';
-import path from 'path';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 import SubCategorySchemaModel from "../models/subcategory.model.js";
 
 export const save=async(req,res)=>{
   try{
   console.log(req.body);
+  if (!req.body.subcatnm) {
+      return res.status(400).json({
+        status: false,
+        message: "Category name required"
+      });
+    }
+
+     if (!req.file) {
+      return res.status(400).json({
+        status: false,
+        message: "Category icon required"
+      });
+    }
  const subcategory=await SubCategorySchemaModel.find();
  const l=subcategory.length;
  const _id=l==0?1:subcategory[l-1]._id+1;
 
  //to get file & to move in specific folder
- const caticon=req.files.caticon;
- const subcaticonnm=Date.now()+"-"+caticon.name;
-//  const uploadpath=path.join(__dirname,"../../UI/public/assets/uploads/subcategoryicons",subcaticonnm);
-//  caticon.mv(uploadpath);
+ const caticon=req.file.path;
 
  const scDetails={...req.body,'_id':_id,"subcaticonnm":subcaticonnm};
     await SubCategorySchemaModel.create(scDetails);
