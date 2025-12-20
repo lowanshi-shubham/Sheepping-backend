@@ -119,7 +119,7 @@ export const save = async (req, res) => {
     const _id = l === 0 ? 1 : category[l - 1]._id + 1;
 
     // ✅ Multer file path
-    const caticonnm = req.file.path;
+const caticonnm =req.file.secure_url;
 
     // ✅ Mongo save
     const cDetails = {
