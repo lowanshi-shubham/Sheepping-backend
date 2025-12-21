@@ -1,49 +1,51 @@
 import nodemailer from "nodemailer";
-import { Link } from 'react-router-dom'
 
 function sendMail(email, password) {
-  var transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: "shubhamlowanshi12345@gmail.com",
-      pass: "tjpf sbul onfa ofor",
+      pass: "tjpf sbul onfa ofor", // app password
     },
   });
 
-  var mailOptions = {
-    from:"Shiping War",
+  const verifyLink = `http://localhost:5173/verify/${email}`;
+
+  const mailOptions = {
+    from: "Shipping War <shubhamlowanshi12345@gmail.com>",
     to: email,
-    subject: "Verification Email Shipping War",
-    html:
-      "<h1>Welcome to Shipping War</h1><p>You have successfully registered to our site , your login credentials are attached below</p><h2>Username : " +
-      email +
-      "</h2><h2>Password : " +
-      password +
-      "</h2><h1>Click on the link below to verify account</h1> <Link to='http://localhost:5173/verify/" +
-      email +
-      "'> Click to verify....</Link>", 
+    subject: "Verification Email - Shipping War",
+    html: `
+      <h1>Welcome to Shipping War</h1>
 
-//       `
-//   <h1>Welcome to Shipping War</h1>
-//   <p>You have successfully registered to our site. Your login credentials are below:</p>
-//   <h2>Username: ${email}</h2>
-//   <h2>Password: ${password}</h2>
-//   <p><strong>Click below to verify your account:</strong></p>
-//   <a href="http://localhost:5173/verify/${email}" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Click to verify...</a>
-//   <p>If the button doesn't work, copy and paste this URL into your browser:</p>
-//   <p>http://localhost:5173/verify/${email}</p>
-// `
+      <p>You have successfully registered to our site. Your login credentials are below:</p>
 
-// <a href='http://localhost:5173/verify/" +
-//       email +
-//       "'>
+      <p><b>Username:</b> ${email}</p>
+      <p><b>Password:</b> ${password}</p>
+
+      <h3>Click on the link below to verify your account</h3>
+
+      <a 
+        href="${verifyLink}" 
+        style="
+          display:inline-block;
+          padding:12px 20px;
+          background:#0d6efd;
+          color:white;
+          text-decoration:none;
+          border-radius:5px;
+        "
+      >
+        Click to Verify
+      </a>
+    `,
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log(error);
+      console.log("Mail error:", error);
     } else {
-      console.log("Email sent: " + info.response);
+      console.log("Email sent:", info.response);
     }
   });
 }

@@ -8,18 +8,28 @@ import sendMail from "./email.controller.js";
 import UserSchemaModel from "../models/user.model.js";
 
 export const save=async(req,res)=>{
- const users=await UserSchemaModel.find();
- const l=users.length;
- const _id=l==0?1:users[l-1]._id+1;
- const password =rs.generate({length:8,charset:'alphanumeric'})
- console.log(password)
-//  const hendelPassword =await bcrypt.hash(password,10);
- const userDetails={...req.body, 'password':password, '_id':_id,'status':0,'role':'user','info':Date()};
+  
+ const { email } = req.body;
+
+    // ✅ Email already exists check
+    const existingUser = await UserSchemaModel.findOne({ email });
+
+    if (existingUser) {
+      return res.status(409).json({
+        status: false,
+        message: "Email already registered"
+      });
+    } 
+//  const password =rs.generate({length:8,charset:'alphanumeric'})
+//  console.log(password)
+let password=req.body.password
+ const hendelPassword =await bcrypt.hash(password,10);
+ const userDetails={...req.body, 'password':hendelPassword, 'status':0,'role':'user','info':Date()};
  
  try{
     await UserSchemaModel.create(userDetails);
     sendMail(userDetails.email,password);
-    res.status(201).json({"status":true});
+    res.status(201).json({"status":true });
  }
  catch(error){
   console.log(error)
@@ -28,7 +38,9 @@ export const save=async(req,res)=>{
 };
 
 export const fetch=async(req,res)=>{
+  console.log("user Fetch api is Run")
    var userList=await UserSchemaModel.find(req.query);
+   console.log(userList);
    if(userList.length!=0)
      res.status(200).json(userList);
    else
@@ -56,7 +68,9 @@ export const fetch=async(req,res)=>{
 
 
    export var update=async(req,res)=>{
+    console.log("user data update api");
       var obj=req.body;
+      console.log(obj);
       if(obj!=undefined)
       {
          let userDetails = await UserSchemaModel.findOne(req.body.condition_obj);
@@ -82,11 +96,18 @@ export const fetch=async(req,res)=>{
     // console.log(orgPassword)
 // console.log(req.body)
     const {email,password} = req.body
-    var condition_obj={email:email,password:password, "status":1};
+    var condition_obj={email:email, "status":1};
     console.log(condition_obj)
     var user=await UserSchemaModel.findOne(condition_obj);
     console.log(user)
     if(!user) return res.status(404).json({message:"invailid email or password"});
+      // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+    
 
     // console.log(user.password)
 

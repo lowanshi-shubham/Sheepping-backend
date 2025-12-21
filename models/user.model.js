@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const UserSchema = mongoose.Schema({
-  _id: Number,
   name: {
     type: String,
     required: [true,"Name is required"],
