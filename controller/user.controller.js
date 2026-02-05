@@ -24,7 +24,7 @@ export const save=async(req,res)=>{
 //  console.log(password)
 let password=req.body.password
  const hendelPassword =await bcrypt.hash(password,10);
- const userDetails={...req.body, 'password':hendelPassword, 'status':0,'role':'user','info':Date()};
+ const userDetails={...req.body, 'password':hendelPassword, 'status':1,'role':'user','info':Date()};
  
  try{
     await UserSchemaModel.create(userDetails);
